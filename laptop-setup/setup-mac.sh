@@ -69,13 +69,13 @@ fi
 
 export AWS_DEFAULT_REGION="$AWS_REGION"
 export AWS_REGION="$AWS_REGION"
+AWS_PROFILE_NAME="${AWS_PROFILE:-openday-team}"
 
-printf '\nChecking AWS identity...\n'
-if aws sts get-caller-identity; then
+printf '\nChecking AWS identity (profile: %s)...\n' "$AWS_PROFILE_NAME"
+if aws sts get-caller-identity --profile "$AWS_PROFILE_NAME" >/dev/null 2>&1; then
   ok "AWS credentials detected"
 else
-  warn "AWS credentials are not configured. Ask the facilitator for the team access method, then rerun this script."
-  exit 2
+  warn "No AWS credentials yet under profile '$AWS_PROFILE_NAME' - that's expected if you haven't done Team setup (step 1) yet. Rerun this script after that to confirm."
 fi
 
 if [[ -n "$BEDROCK_MODEL_ID" ]]; then
@@ -89,11 +89,11 @@ JSON
   if aws bedrock-runtime converse \
       --model-id "$BEDROCK_MODEL_ID" \
       --region "$AWS_REGION" \
+      --profile "$AWS_PROFILE_NAME" \
       --cli-input-json "file://$payload_file" >/tmp/reply-bedrock-result.json; then
     ok "Bedrock invocation works"
   else
-    fail "Bedrock invocation failed. Check model ID, region, and permissions."
-    exit 3
+    warn "Bedrock invocation failed - check this again after Team setup (step 1) if you haven't done it yet."
   fi
 else
   warn "BEDROCK_MODEL_ID was not provided. Bedrock invocation was not tested."

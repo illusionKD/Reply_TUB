@@ -56,16 +56,16 @@ if ($kiroPaths | Where-Object { Test-Path $_ }) {
 
 $env:AWS_DEFAULT_REGION = $AwsRegion
 $env:AWS_REGION = $AwsRegion
+$AwsProfileName = if ($env:AWS_PROFILE) { $env:AWS_PROFILE } else { 'openday-team' }
 
-Write-Host "`nChecking AWS identity..."
+Write-Host "`nChecking AWS identity (profile: $AwsProfileName)..."
 try {
-  $identity = aws sts get-caller-identity --output json
+  $identity = aws sts get-caller-identity --profile $AwsProfileName --output json
   if ($LASTEXITCODE -ne 0) { throw 'AWS identity check failed' }
   Ok 'AWS credentials detected'
   Write-Host $identity
 } catch {
-  Warn 'AWS credentials are not configured. Ask the facilitator for the team access method, then rerun this script.'
-  exit 3
+  Warn "No AWS credentials yet under profile '$AwsProfileName' - that's expected if you haven't done Team setup (step 1) yet. Rerun this script after that to confirm."
 }
 
 if ([string]::IsNullOrWhiteSpace($BedrockModelId)) {
@@ -77,13 +77,11 @@ if ([string]::IsNullOrWhiteSpace($BedrockModelId)) {
   Set-Content -Path $payloadFile -Value $payload -Encoding utf8
 
   try {
-    aws bedrock-runtime converse --model-id $BedrockModelId --region $AwsRegion --cli-input-json "file://$payloadFile"
+    aws bedrock-runtime converse --model-id $BedrockModelId --region $AwsRegion --profile $AwsProfileName --cli-input-json "file://$payloadFile"
     if ($LASTEXITCODE -ne 0) { throw 'Bedrock invocation failed' }
     Ok 'Bedrock invocation works'
   } catch {
-    Fail 'Bedrock invocation failed. Check model ID, region, and permissions.'
-    Remove-Item $payloadFile -Force -ErrorAction SilentlyContinue
-    exit 4
+    Warn 'Bedrock invocation failed - check this again after Team setup (step 1) if you haven''t done it yet.'
   }
   Remove-Item $payloadFile -Force -ErrorAction SilentlyContinue
 }
