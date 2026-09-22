@@ -7,9 +7,9 @@ FastAPI + Mangum on AWS Lambda, behind API Gateway, calling Amazon Bedrock (Clau
 You edit files under `app/` — that's the whole surface. Nothing else in this folder needs to change.
 
 - `app/main.py` — FastAPI app, CORS, Lambda handler (rarely needs changes)
-- `app/routes.py` — API endpoints (`/health`, `/tickets/respond`)
-- `app/prompts.py` — the system prompt and how ticket text becomes a Bedrock request. **Most of your prompt-engineering work happens here.**
-- `app/bedrock_client.py` — the actual Bedrock call
+- `app/routes.py` — API endpoints (`/health`, `/tickets/respond`). This is stateless — it processes one ticket and returns a draft + urgency + triage decision. The ticket queue itself lives in the frontend, not here.
+- `app/prompts.py` — the system prompt and how ticket text becomes a Bedrock request, including the `URGENCY:`/`DRAFT:` output format. **Most of your prompt-engineering work happens here.**
+- `app/bedrock_client.py` — the actual Bedrock call and output parsing
 - `app/demo_responses.py` — canned responses used only when `DEMO_MODE=true`
 - `app/models.py` — request/response shapes
 

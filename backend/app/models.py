@@ -3,6 +3,13 @@ from pydantic import BaseModel, Field
 
 HUMAN_REVIEW_WARNING = "AI-generated draft. Human review required before sending."
 
+# The AI only ever decides how confident it is (a triage signal for the
+# human) — it never sends anything itself. ready_for_review = routine,
+# needs_escalation = a human should look closer before drafting is trusted.
+Decision = Literal["ready_for_review", "needs_escalation"]
+Urgency = Literal["Low", "Medium", "High"]
+Source = Literal["bedrock", "demo_mode"]
+
 
 class TicketRequest(BaseModel):
     ticket: str = Field(..., max_length=4000)
@@ -12,7 +19,9 @@ class TicketRequest(BaseModel):
 class TicketResponse(BaseModel):
     draft: str
     category: str
-    source: Literal["bedrock", "demo_mode"]
+    urgency: Urgency
+    decision: Decision
+    source: Source
     warning: str = HUMAN_REVIEW_WARNING
 
 

@@ -6,10 +6,12 @@ React + Vite, hosted on AWS Amplify Hosting.
 
 You edit files under `src/` — that's the whole surface.
 
-- `src/App.jsx` — page layout
-- `src/components/TicketForm.jsx` — the input form (categories list lives here)
-- `src/components/ResponseDisplay.jsx` — how the draft, category, and source indicator are shown
-- `src/api.js` — how the frontend talks to the backend (rarely needs changes)
+- `src/App.jsx` — page layout (queue on the left, ticket detail on the right)
+- `src/components/TicketQueue.jsx` — the ticket list (status/urgency badges live here)
+- `src/components/TicketDetail.jsx` — the selected ticket: process button, draft, badges, approve/archive actions
+- `src/components/NewTicketForm.jsx` — the "+ New ticket" form (categories list lives here)
+- `src/useTickets.js` — the ticket queue's state (Create/Read/Update/Archive) and `localStorage` persistence. There's no backend database — the queue is per-browser, seeded from `src/data/sampleTickets.json`. Only AI processing (drafting + urgency) calls the backend.
+- `src/api.js` — how the frontend talks to the backend for AI processing (rarely needs changes)
 
 After editing:
 ```bash

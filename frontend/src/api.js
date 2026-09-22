@@ -1,6 +1,6 @@
 const API_URL = import.meta.env.VITE_API_URL
 
-export async function submitTicket(ticket, category) {
+export async function processTicket(ticket, category) {
   const res = await fetch(`${API_URL}/tickets/respond`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

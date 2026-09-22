@@ -19,7 +19,13 @@ Authorization:
 - Recommend escalation when the issue requires a human decision.
 
 When information is missing or unclear: state what is missing, ask a concise clarification question, \
-avoid making assumptions."""
+avoid making assumptions.
+
+Output format — respond with exactly two parts, in this order, using these exact labels:
+URGENCY: <Low, Medium, or High — how urgent or frustrated the customer seems>
+DRAFT:
+<the response draft itself>
+"""
 
 
 def build_user_message(ticket: str, category: str) -> str:

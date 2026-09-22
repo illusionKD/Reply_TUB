@@ -2,50 +2,59 @@
 
 ## Minimum viable product
 
-### FR-01: Ticket input
+### FR-01: Ticket queue
 
-The user can enter or paste a customer support ticket.
+The application shows a queue of customer support tickets, seeded from `sample-data/sample-tickets.json`. This is client-side state (per browser), not a shared database.
 
-### FR-02: Category
+### FR-02: Create
 
-The user can select a ticket category or enter a category manually.
+A user can add a new ticket to the queue (message + optional category).
 
-Automatic classification is optional.
+### FR-03: Process with AI
 
-### FR-03: Generate draft
+From a selected ticket, a user can trigger AI processing via Amazon Bedrock. The AI returns: a response draft, an urgency level (Low/Medium/High), and a triage decision (`ready_for_review` or `needs_escalation`).
 
-The user can trigger generation of a response draft using Amazon Bedrock.
+### FR-04: AI decision, never AI sending
 
-### FR-04: Display result
+The AI's decision only changes how a ticket is *prioritized* for a human (routine vs. needs closer judgment). It never sends anything and never bypasses human review — see `ai-behavior-guidelines.md`.
 
-The application displays the generated response in a readable format.
+### FR-05: Update
 
-### FR-05: Human review
+A user can edit the AI's draft, and can change a ticket's status (e.g. mark "Approved & sent" after reviewing).
 
-The application displays:
+### FR-06: Archive
+
+A user can archive a ticket (soft delete — a true delete isn't a natural fit for a support-ticket record).
+
+### FR-07: Human review warning
+
+The application displays, on every AI-generated draft:
 
 > AI-generated draft. Human review required before sending.
 
-### FR-06: Validation
+### FR-08: Validation
 
-The application prevents generation when the ticket is empty and displays a helpful validation message.
+The application prevents processing an empty ticket and shows a helpful message.
 
-### FR-07: Loading state
+### FR-09: Loading state
 
-The application shows that generation is in progress.
+The application shows that AI processing is in progress.
 
-### FR-08: Error handling
+### FR-10: Error handling
 
-The application displays a useful error message if the backend or model invocation fails. Do not expose credentials or internal secrets.
+If the backend or model invocation fails, the application shows a clear error — never a silently substituted demo response, and never exposed credentials or internal details.
 
 ## Backend expectations
 
-The backend should:
-- Receive the ticket and category.
+The backend is intentionally stateless — it does not store tickets. It should:
+- Receive one ticket's text + category.
 - Validate the request.
 - Build a prompt using the business context and behavior guidelines.
-- Invoke Amazon Bedrock.
+- Invoke Amazon Bedrock, parse out the urgency and draft.
+- Derive the triage decision from urgency.
 - Return a structured response to the frontend.
+
+The ticket queue, its statuses, and edits all live in the frontend (React state + `localStorage`) — there is no database. This keeps the backend simple and avoids giving a beginner team a data-persistence layer to debug on top of everything else.
 
 **Deployment requirement**: the backend must run on AWS (API Gateway + Lambda) for the final demo, not only on localhost. Local runs are fine during development.
 
@@ -56,4 +65,5 @@ The backend should:
 - Real order lookups.
 - Automatic refunds.
 - Production-grade authentication.
+- A shared/persistent database — the queue is per-browser by design.
 - Complex analytics.

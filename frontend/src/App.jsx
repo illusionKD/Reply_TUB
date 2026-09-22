@@ -1,44 +1,42 @@
 import { useState } from 'react'
-import TicketForm from './components/TicketForm'
-import ResponseDisplay from './components/ResponseDisplay'
-import { submitTicket } from './api'
+import TicketQueue from './components/TicketQueue'
+import TicketDetail from './components/TicketDetail'
+import NewTicketForm from './components/NewTicketForm'
+import { useTickets } from './useTickets'
 
 export default function App() {
-  const [ticket, setTicket] = useState('')
-  const [category, setCategory] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [result, setResult] = useState(null)
-  const [error, setError] = useState(null)
+  const { tickets, error, processingId, createTicket, updateTicket, archiveTicket, processTicket, resetToSampleData } =
+    useTickets()
+  const [selectedId, setSelectedId] = useState(null)
 
-  async function handleSubmit() {
-    setLoading(true)
-    setError(null)
-    setResult(null)
-    try {
-      const data = await submitTicket(ticket, category)
-      setResult(data)
-    } catch (err) {
-      setError(err.message)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const selected = tickets.find((t) => t.id === selectedId) || null
 
   return (
-    <main style={{ maxWidth: '700px', margin: '2rem auto', fontFamily: 'sans-serif' }}>
+    <main style={{ maxWidth: '1000px', margin: '2rem auto', fontFamily: 'sans-serif', padding: '0 1rem' }}>
       <h1>Musterhandel Retail - Ticket Assistant</h1>
-      <p>Internal tool for support employees. Drafts are AI-generated and require human review.</p>
+      <p>Internal tool for support employees. The AI drafts and triages; a human always reviews before sending.</p>
 
-      <TicketForm
-        ticket={ticket}
-        setTicket={setTicket}
-        category={category}
-        setCategory={setCategory}
-        onSubmit={handleSubmit}
-        loading={loading}
-      />
+      <div style={{ display: 'flex', gap: '2rem' }}>
+        <div style={{ flex: '0 0 340px' }}>
+          <NewTicketForm onCreate={(message, category) => createTicket(message, category)} />
+          <button onClick={resetToSampleData} style={{ marginBottom: '0.75rem', marginLeft: '0.5rem' }}>
+            Reset to sample tickets
+          </button>
+          <TicketQueue tickets={tickets} selectedId={selectedId} onSelect={setSelectedId} />
+        </div>
 
-      <ResponseDisplay result={result} error={error} />
+        <div style={{ flex: '1' }}>
+          <TicketDetail
+            ticket={selected}
+            processing={processingId}
+            error={selected && error}
+            onProcess={processTicket}
+            onUpdateDraft={(id, draft) => updateTicket(id, { draft })}
+            onSetStatus={(id, status) => updateTicket(id, { status })}
+            onArchive={archiveTicket}
+          />
+        </div>
+      </div>
     </main>
   )
 }
