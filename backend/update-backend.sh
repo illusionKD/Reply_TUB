@@ -2,9 +2,13 @@
 # For students. Redeploys ONLY your edited application code (backend/app/) —
 # no Docker, no SAM, no CloudFormation. Dependencies live in a separate Lambda
 # Layer that this script never touches.
-# Usage: ./update-backend.sh <aws-cli-profile>
+#
+# Usage: ./update-backend.sh
+# (Uses the "openday-team" AWS profile by default - see README "First-time
+# setup". Pass a different profile name as an argument if you named yours
+# something else: ./update-backend.sh myprofile)
 set -euo pipefail
-PROFILE="${1:?Usage: ./update-backend.sh <aws-cli-profile>}"
+PROFILE="${1:-openday-team}"
 cd "$(dirname "$0")/app"
 
 ZIP_PATH="/tmp/openday-backend-update.zip"

@@ -16,9 +16,9 @@ Right now `App.jsx` just checks `/health` and shows "backend status: live" — t
 
 After editing:
 ```bash
-./deploy-frontend.sh <your-team-profile>
+./deploy-frontend.sh
 ```
-This builds and uploads to Amplify — takes under a minute.
+This builds and uploads to Amplify — takes under a minute. (Uses the `openday-team` AWS profile by default; pass a different name as an argument if you set yours up differently.)
 
 ## First-time setup
 

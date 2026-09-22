@@ -2,9 +2,13 @@
 # Builds the React/Vite app and deploys it to AWS Amplify Hosting (manual zip deploy).
 # Safe for both the facilitator's first deploy and students' later redeploys -
 # creates the Amplify app/branch if they don't exist yet, reuses them otherwise.
-# Usage: ./deploy-frontend.sh <aws-cli-profile>
+#
+# Usage: ./deploy-frontend.sh
+# (Uses the "openday-team" AWS profile by default - see README "First-time
+# setup". Pass a different profile name as an argument if you named yours
+# something else: ./deploy-frontend.sh myprofile)
 set -euo pipefail
-PROFILE="${1:?Usage: ./deploy-frontend.sh <aws-cli-profile>}"
+PROFILE="${1:-openday-team}"
 REGION="eu-central-1"
 APP_NAME="openday-frontend"
 BRANCH="main"

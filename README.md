@@ -36,15 +36,16 @@ A bare skeleton is already deployed to your team's AWS account — just enough t
 Your facilitator will give you: an **AWS Access Key ID + Secret Access Key** for your team's account, and your team's **backend API endpoint** (a URL like `https://xxxxx.execute-api.eu-central-1.amazonaws.com`).
 
 ```bash
-# Register your team's AWS credentials as a named profile
-aws configure --profile myteam
+# Register your team's AWS credentials under the profile name the deploy
+# scripts expect by default - use exactly this name, "openday-team":
+aws configure --profile openday-team
 #   AWS Access Key ID: <from your facilitator>
 #   AWS Secret Access Key: <from your facilitator>
 #   Default region: eu-central-1
 #   Default output format: json
 
 # Confirm it works — should print YOUR team's AWS account ID
-aws sts get-caller-identity --profile myteam
+aws sts get-caller-identity --profile openday-team
 
 # Point the frontend at your team's backend
 cd frontend
@@ -53,7 +54,7 @@ cp .env.example .env
 npm install
 ```
 
-Use `myteam` (or whatever profile name you chose) as the `<profile>` argument to every deploy script below.
+That's the only setup step. Every deploy script below already defaults to the `openday-team` profile, so you never have to type it again.
 
 ### 2. Build
 
@@ -61,7 +62,7 @@ Use `myteam` (or whatever profile name you chose) as the `<profile>` argument to
 2. Open the repository in Kiro.
 3. Use the initial Kiro prompt.
 4. Ask Kiro to inspect the repository and propose an implementation plan for the must-haves in `docs/functional-requirements.md`.
-5. After editing, redeploy with `backend/update-backend.sh myteam` and `frontend/deploy-frontend.sh myteam` — no Docker or SAM needed for either.
+5. After editing, redeploy with just `backend/update-backend.sh` and `frontend/deploy-frontend.sh` — no profile name, no Docker, no SAM needed.
 6. Build and test the must-haves before attempting any nice-to-haves.
 
 ## Important

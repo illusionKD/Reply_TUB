@@ -18,9 +18,9 @@ A couple of hard requirements from `docs/ai-behavior-guidelines.md` and `functio
 
 After editing, redeploy your change with:
 ```bash
-./update-backend.sh <your-team-profile>
+./update-backend.sh
 ```
-This only uploads your code — no Docker, no SAM, no CloudFormation. Don't add new pip dependencies; the ones already provided (fastapi, mangum, boto3, pydantic) cover everything this app needs. If you think you need another one, ask a facilitator.
+This only uploads your code — no Docker, no SAM, no CloudFormation. Uses the `openday-team` AWS profile by default (see root README "Team setup"). Don't add new pip dependencies; the ones already provided (fastapi, mangum, boto3, pydantic) cover everything this app needs. If you think you need another one, ask a facilitator.
 
 ## Local testing (before deploying)
 
