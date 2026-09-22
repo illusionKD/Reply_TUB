@@ -1,62 +1,49 @@
 # Functional Requirements
 
-## Minimum viable product
+The AWS deployment pipeline (Lambda, API Gateway, Bedrock permissions, Amplify hosting) is already set up and working — that's not your task. Your task is everything below.
 
-### FR-01: Ticket queue
+## Must haves
 
-The application shows a queue of customer support tickets, seeded from `sample-data/sample-tickets.json`. This is client-side state (per browser), not a shared database.
+### 1. Ticket queue
+Show a queue of customer support tickets, seeded from `sample-data/sample-tickets.json`. This can live entirely in the frontend (state + `localStorage`) — no database needed.
 
-### FR-02: Create
-
+### 2. Create
 A user can add a new ticket to the queue (message + optional category).
 
-### FR-03: Process with AI
+### 3. AI-generated draft
+From a selected ticket, a user can trigger AI processing via Amazon Bedrock and get a response draft back.
 
-From a selected ticket, a user can trigger AI processing via Amazon Bedrock. The AI returns: a response draft, an urgency level (Low/Medium/High), and a triage decision (`ready_for_review` or `needs_escalation`).
-
-### FR-04: AI decision, never AI sending
-
-The AI's decision only changes how a ticket is *prioritized* for a human (routine vs. needs closer judgment). It never sends anything and never bypasses human review — see `ai-behavior-guidelines.md`.
-
-### FR-05: Update
-
-A user can edit the AI's draft, and can change a ticket's status (e.g. mark "Approved & sent" after reviewing).
-
-### FR-06: Archive
-
-A user can archive a ticket (soft delete — a true delete isn't a natural fit for a support-ticket record).
-
-### FR-07: Human review warning
-
-The application displays, on every AI-generated draft:
-
+### 4. Human review, always
+Every AI draft displays:
 > AI-generated draft. Human review required before sending.
 
-### FR-08: Validation
+The AI only ever drafts — it never sends anything itself.
 
-The application prevents processing an empty ticket and shows a helpful message.
+### 5. Update
+A user can edit the AI's draft, and mark a ticket as approved/sent.
 
-### FR-09: Loading state
+### 6. Archive
+A user can archive a ticket (soft delete — a true delete isn't a natural fit for a support-ticket record).
 
-The application shows that AI processing is in progress.
+### 7. Validation and error handling
+Prevent processing an empty ticket, and show a clear error message if the backend or Bedrock call fails — never expose credentials or internal details, and never silently substitute fake content for a real failure.
 
-### FR-10: Error handling
+### 8. Deployed to AWS
+The final demo must use the live deployed URL, not localhost. Use `backend/update-backend.sh` and `frontend/deploy-frontend.sh` to push your changes to the already-provisioned infrastructure — no Docker, SAM, or CloudFormation needed on your end.
 
-If the backend or model invocation fails, the application shows a clear error — never a silently substituted demo response, and never exposed credentials or internal details.
+## Nice to haves
 
-## Backend expectations
+Only attempt these once all the must-haves work.
 
-The backend is intentionally stateless — it does not store tickets. It should:
-- Receive one ticket's text + category.
-- Validate the request.
-- Build a prompt using the business context and behavior guidelines.
-- Invoke Amazon Bedrock, parse out the urgency and draft.
-- Derive the triage decision from urgency.
-- Return a structured response to the frontend.
+**Easier (low risk, good use of spare time):**
+- Proper UI design/branding
+- A simple status counter ("3 new, 2 resolved, 1 archived") — pure frontend, no backend change
+- A "regenerate" button that asks the AI for another draft
 
-The ticket queue, its statuses, and edits all live in the frontend (React state + `localStorage`) — there is no database. This keeps the backend simple and avoids giving a beginner team a data-persistence layer to debug on top of everything else.
-
-**Deployment requirement**: the backend must run on AWS (API Gateway + Lambda) for the final demo, not only on localhost. Local runs are fine during development.
+**Harder (real AI/backend work — bonus only, not expected of most teams):**
+- Auto-categorization (AI infers the category instead of manual selection)
+- The AI assessing urgency and flagging which tickets need closer human judgment vs. which are routine
+- Tone selection (e.g. more formal / more casual draft)
 
 ## Out of scope
 

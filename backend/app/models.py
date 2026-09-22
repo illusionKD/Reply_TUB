@@ -1,30 +1,8 @@
-from typing import Literal
-from pydantic import BaseModel, Field
+"""Define your request/response models here as you build the ticket
+endpoints. Nothing pre-built on purpose — this is part of the task.
 
-HUMAN_REVIEW_WARNING = "AI-generated draft. Human review required before sending."
-
-# The AI only ever decides how confident it is (a triage signal for the
-# human) — it never sends anything itself. ready_for_review = routine,
-# needs_escalation = a human should look closer before drafting is trusted.
-Decision = Literal["ready_for_review", "needs_escalation"]
-Urgency = Literal["Low", "Medium", "High"]
-Source = Literal["bedrock", "demo_mode"]
-
-
-class TicketRequest(BaseModel):
-    ticket: str = Field(..., max_length=4000)
-    category: str | None = Field(default=None, max_length=100)
-
-
-class TicketResponse(BaseModel):
-    draft: str
-    category: str
-    urgency: Urgency
-    decision: Decision
-    source: Source
-    warning: str = HUMAN_REVIEW_WARNING
-
-
-class ErrorResponse(BaseModel):
-    error: str
-    detail: str | None = None
+A couple of things worth keeping from the original design brief
+(see docs/functional-requirements.md and docs/ai-behavior-guidelines.md):
+- Every AI-generated draft response must carry a human-review warning.
+- Never expose internal error details or credentials in an error response.
+"""

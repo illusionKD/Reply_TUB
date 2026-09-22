@@ -6,12 +6,13 @@ React + Vite, hosted on AWS Amplify Hosting.
 
 You edit files under `src/` — that's the whole surface.
 
-- `src/App.jsx` — page layout (queue on the left, ticket detail on the right)
-- `src/components/TicketQueue.jsx` — the ticket list (status/urgency badges live here)
-- `src/components/TicketDetail.jsx` — the selected ticket: process button, draft, badges, approve/archive actions
-- `src/components/NewTicketForm.jsx` — the "+ New ticket" form (categories list lives here)
-- `src/useTickets.js` — the ticket queue's state (Create/Read/Update/Archive) and `localStorage` persistence. There's no backend database — the queue is per-browser, seeded from `src/data/sampleTickets.json`. Only AI processing (drafting + urgency) calls the backend.
-- `src/api.js` — how the frontend talks to the backend for AI processing (rarely needs changes)
+Right now `App.jsx` just checks `/health` and shows "backend status: live" — that proves the deployment pipeline works. You're building the real UI:
+
+- `src/App.jsx` — currently just a status check; replace with the real ticket queue UI
+- `src/api.js` — has `checkHealth()`; add your own functions here as you build backend endpoints (e.g. a function to process a ticket)
+- Copy `sample-data/sample-tickets.json` (at the repo root) into the frontend to seed your queue, e.g. `src/data/sampleTickets.json`
+- Structure your own components under `src/components/` — a queue list, a ticket detail view, a new-ticket form are natural pieces, but organize it however makes sense to your team
+- No backend database is needed — the queue (list, statuses, edits) can live entirely in React state + `localStorage`; only the actual AI draft generation needs to call the backend
 
 After editing:
 ```bash

@@ -1,27 +1,22 @@
 # Definition of Done
 
-A team can demonstrate the following:
+## Must haves (see functional-requirements.md for detail)
 
-- [ ] The application is deployed to AWS (API Gateway + Lambda) and reachable via a live endpoint — not running only on localhost.
-- [ ] A ticket queue is visible, seeded from the sample tickets.
-- [ ] A user can select a ticket and trigger AI processing.
-- [ ] The application invokes Amazon Bedrock and shows urgency + the AI's triage decision (ready for review / needs escalation).
-- [ ] A response draft is displayed and is editable.
-- [ ] A user can mark a ticket as approved/sent, and can archive a ticket.
-- [ ] A user can add a new ticket to the queue.
-- [ ] The human-review warning is visible on every AI draft.
-- [ ] Empty input is handled.
+- [ ] Deployed to AWS and reachable via the live endpoint — not localhost.
+- [ ] Ticket queue visible, seeded from the sample tickets.
+- [ ] A user can add a new ticket.
+- [ ] A user can select a ticket and get a real AI-generated draft back.
+- [ ] The human-review warning is shown on every draft.
+- [ ] A user can edit the draft and mark it approved/sent.
+- [ ] A user can archive a ticket.
+- [ ] Empty input is handled; a Bedrock failure shows a clear error, not a crash or silently-substituted content.
 - [ ] At least one missing-information ticket is tested.
 - [ ] At least one difficult/frustrated customer ticket is tested.
 - [ ] The team can explain one important design decision.
 
-## Stretch goals
+## Nice to haves
 
-Only attempt these after the MVP works:
+Only after every must-have above works:
 
-- Smarter/more consistent auto-classification of category.
-- Regenerate a draft with a different tone.
-- A dashboard/count of ready-for-review vs. needs-escalation tickets.
-- Side-by-side comparison of two different prompt strategies.
-- Voice input for dictating a ticket.
-- Response quality checklist shown next to the draft.
+**Easier:** proper UI design, a status counter, a "regenerate" button.
+**Harder (bonus):** auto-categorization, AI urgency/escalation triage, tone selection.

@@ -30,21 +30,19 @@ AWS Lambda
 Amazon Bedrock
 ```
 
-## Implementation guidance
+## What's already deployed vs. what you build
 
-Start with the simplest architecture that can produce a working result.
+**Already deployed and working** — don't rebuild this: a Lambda function behind an API Gateway HTTP API, with a `/health` endpoint, IAM permissions already granted (including Bedrock access), and a frontend already hosted on Amplify. Opening the deployed URL right now just shows "backend status: live." Proving that AWS plumbing works was done in advance so your 2 hours goes into the actual application, not fighting deployment mechanics.
 
-**AWS deployment is required, not optional.** The final demo must call a deployed API Gateway endpoint backed by a Lambda function invoking Bedrock — not a process running only on localhost.
+**Everything else is yours to build**: the ticket endpoints, the Bedrock integration, categorization, and the whole frontend UI. See `functional-requirements.md` for the must-haves.
 
-The team may still:
-- Build and test locally first while iterating quickly.
-- Use a local backend temporarily during development.
+## Suggested shape
 
-But before the demo, the same flow must be redeployed behind API Gateway + Lambda, and the demo must use that live endpoint.
+Keep the backend **stateless** — process one ticket at a time, return a result, store nothing. The ticket queue itself (the list, statuses, edits) is a good fit for the **frontend**, in React state persisted to `localStorage`, seeded from `sample-data/sample-tickets.json`. A database (e.g. DynamoDB) is deliberately out of scope — it would add a real persistence layer to debug on top of everything else, for a workshop where the queue only needs to exist within one browser session.
 
-## Where ticket state lives
+## Deployment
 
-The backend is intentionally **stateless** — it processes one ticket at a time and stores nothing. The ticket queue itself (the list, statuses, edits) lives entirely in the **frontend**, in React state persisted to `localStorage`, seeded from `sample-data/sample-tickets.json`. There is no database. This was a deliberate simplicity choice: a shared database (e.g. DynamoDB) would add a real persistence layer for a beginner team to debug on top of everything else, for a workshop where the queue only needs to exist within one browser session.
+**AWS deployment is required, not optional.** The final demo must use the live deployed URL. Build and test locally while iterating, then push with `backend/update-backend.sh <profile>` and `frontend/deploy-frontend.sh <profile>` — both already work against the pre-provisioned infrastructure, no Docker/SAM/CloudFormation needed on your end.
 
 ## Design principles
 

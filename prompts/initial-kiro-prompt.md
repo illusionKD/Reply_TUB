@@ -13,7 +13,7 @@ First, read all files in the docs folder, especially:
 - definition-of-done.md
 
 Then:
-1. Inspect the existing repository.
+1. Inspect the existing repository. Note: the AWS deployment (Lambda, API Gateway, Bedrock permissions, Amplify hosting) is already live and working - it currently only has a `/health` endpoint and a placeholder frontend page. Everything else (ticket endpoints, Bedrock integration, the UI) needs to be built.
 2. Summarize the business problem.
 3. Summarize the minimum functional requirements.
 4. Identify assumptions and missing information.
