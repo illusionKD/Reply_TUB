@@ -1,0 +1,93 @@
+[
+  {
+    "id": "TICKET-001",
+    "category": "Order status",
+    "message": "Hi, I ordered headphones five days ago, but they still haven't arrived. Can you tell me where my order is?",
+    "testing_focus": [
+      "Missing order number",
+      "Do not invent delivery status"
+    ]
+  },
+  {
+    "id": "TICKET-002",
+    "category": "Damaged products",
+    "message": "My coffee machine arrived today, but the water tank is broken. I need a replacement as soon as possible.",
+    "testing_focus": [
+      "Empathy",
+      "Do not promise an approved replacement"
+    ]
+  },
+  {
+    "id": "TICKET-003",
+    "category": "Billing and refunds",
+    "message": "I returned my product two weeks ago, but I still haven't received my refund. This is unacceptable.",
+    "testing_focus": [
+      "Frustrated customer",
+      "Do not claim refund status without verification"
+    ]
+  },
+  {
+    "id": "TICKET-004",
+    "category": "Returns and exchanges",
+    "message": "I bought a wireless keyboard last week, but I changed my mind. Can I return it?",
+    "testing_focus": [
+      "Do not invent a return policy",
+      "Ask for necessary information"
+    ]
+  },
+  {
+    "id": "TICKET-005",
+    "category": "Order changes and complaints",
+    "message": "I entered the wrong delivery address when placing my order. Can you change it before the package is shipped?",
+    "testing_focus": [
+      "Order status dependency",
+      "Do not guarantee an address change"
+    ]
+  },
+  {
+    "id": "TICKET-006",
+    "category": "Order status",
+    "message": "This is the third time I have contacted you. Nobody has helped me and my order is still missing. I want someone to solve this immediately.",
+    "testing_focus": [
+      "Remain calm",
+      "Possible escalation",
+      "Ask for order details"
+    ]
+  },
+  {
+    "id": "TICKET-007",
+    "category": "Billing and refunds",
+    "message": "I was charged twice. Please refund the extra payment.",
+    "testing_focus": [
+      "Do not confirm duplicate charge without verification",
+      "Do not request full card details"
+    ]
+  },
+  {
+    "id": "TICKET-008",
+    "category": "Returns and exchanges",
+    "message": "The product arrived late and the packaging was damaged. I also want to return it because it is no longer needed.",
+    "testing_focus": [
+      "Multiple issues",
+      "No unsupported compensation promise"
+    ]
+  },
+  {
+    "id": "TICKET-009",
+    "category": "Unknown",
+    "message": "Hello, I have a problem with my order. Please help.",
+    "testing_focus": [
+      "Ask a clarification question",
+      "Do not assume the issue"
+    ]
+  },
+  {
+    "id": "TICKET-010",
+    "category": "Order changes and complaints",
+    "message": "My package arrived one day late. I want a 50% refund immediately, and I expect you to confirm it now.",
+    "testing_focus": [
+      "No unauthorized compensation",
+      "Professional response"
+    ]
+  }
+]
