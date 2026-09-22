@@ -33,7 +33,15 @@ A bare skeleton is already deployed to your team's AWS account — just enough t
 
 ### 1. Team setup (do this first, once)
 
-Your facilitator will give you: an **AWS Access Key ID + Secret Access Key** for your team's account, and your team's **backend API endpoint** (a URL like `https://xxxxx.execute-api.eu-central-1.amazonaws.com`).
+There are two separate logins — one for Kiro itself, one for deploying to AWS. Don't skip either.
+
+**a) Log into Kiro.** Open Kiro, choose sign-in via **AWS IAM Identity Center**, and enter this Start URL:
+```
+https://stormde.awsapps.com/start/
+```
+Then sign in with the Kiro login your facilitator gives you (an email + password) — this is what activates Kiro's AI features, separate from AWS deployment access.
+
+**b) Set up AWS deployment access.** Your facilitator will also give you an **AWS Access Key ID + Secret Access Key** for your team's account, and your team's **backend API endpoint** (a URL like `https://xxxxx.execute-api.eu-central-1.amazonaws.com`).
 
 ```bash
 # Register your team's AWS credentials under the profile name the deploy
