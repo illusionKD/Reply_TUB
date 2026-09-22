@@ -26,10 +26,24 @@ The application should:
 - `prompts/initial-kiro-prompt.md`: Initial Kiro prompt
 - `backend/`: FastAPI + Mangum on Lambda. **Only a `/health` endpoint exists right now** — the deployment pipeline is proven, the ticket/AI logic is yours to build. See `backend/README.md`.
 - `frontend/`: React + Vite, hosted on AWS Amplify. **Only a placeholder "backend status: live" page exists right now** — the UI is yours to build. See `frontend/README.md`.
+- `laptop-setup/`: run this first, before anything else — see below.
 
 ## Getting started
 
 A bare skeleton is already deployed to your team's AWS account — just enough to prove the AWS pipeline (Lambda, API Gateway, Bedrock permissions, Amplify hosting) actually works. It doesn't do anything yet. Your job is to build the real application on top of it, guided by `docs/`.
+
+### 0. Laptop check (do this before anything else)
+
+Don't have git yet? Use GitHub's **Code → Download ZIP** button (top of this repo's page) instead of cloning — no git required for this first step.
+
+```bash
+cd laptop-setup
+./setup-mac.sh        # or setup-windows.ps1 on Windows (PowerShell)
+```
+
+This checks for and installs git, Node.js, Python, and the AWS CLI if any are missing, and confirms Kiro is installed (it does **not** install Kiro itself — that needs to already be there; ask a facilitator if it's missing). Everything it installs runs visibly in your terminal — normal `brew`/`winget` output, nothing hidden or silent.
+
+Once this passes, `git clone` the repo properly (if you used the ZIP) and move to step 1.
 
 ### 1. Team setup (do this first, once)
 
